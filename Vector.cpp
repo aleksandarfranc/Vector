@@ -1,8 +1,9 @@
 #include <iostream>
 #include <vector>
-#include <unordered_map>
-using namespace std;
 #include "Vector.h"
+
+using namespace std;
+
 template<typename T>
 void PrintVector(const Vector<T>& vector)
 {
@@ -64,17 +65,36 @@ ostream& operator<<(ostream& stream, const Vector3& vec)
 }
 
 int main() {
-	
+
+	Vector<Vector3> vec;
+	vec.emplace_back();
+	vec.emplace_back(1,2,3);
+	vec.emplace_back(3);
+	vec.emplace_back(4);
+	vec.emplace_back(5);
+	vec.PopBack();
+	vec.PopBack();
+	vec.push_back({1,2,3});
+	vec.push_back({1});
+	vec.push_back({});
+
+
+	cout << "no iterator" << endl;
+	for (size_t i = 0; i < vec.Size(); i++)
 	{
-		Vector<string> vector;
-		vector.emplace_back("hello");
-		vector.emplace_back("hello");
-		vector.emplace_back("hello");
-		vector.emplace_back("hello");
-		vector.emplace_back("hello");
-		vector.emplace_back("Helo");
-		vector.emplace_back("Helo");
-		vector.PopBack();
+		cout << vec[i] << endl;
+	}
+
+	cout << "foreach" << endl;
+	for (Vector3& a : vec)
+	{
+		cout << a << endl;
+	}
+
+	cout << "yesiterator" << endl;
+	for (Vector<Vector3>::Iterator it = vec.begin(); it != vec.end(); it++)
+	{
+		cout << *it << endl;;
 	}
 
 	return 0;
