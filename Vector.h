@@ -1,6 +1,79 @@
 #pragma once
+
+template<typename Vector>
+class VectorIterator {
+public:
+	using Type = typename Vector::Type;
+	using Reference = typename Vector::Reference;
+	using Pointer = typename Vector::Pointer;
+
+	VectorIterator(Pointer ptr): ptr(ptr){}
+
+	Reference operator*()
+	{
+		return *ptr;
+	}
+
+	Pointer operator->()
+	{
+		return ptr;
+	}
+
+	Reference operator[](size_t index)
+	{
+		return (ptr[index]);
+	}
+
+	VectorIterator& operator++()
+	{
+		ptr++;
+		return *this;
+	}
+
+	VectorIterator& operator++(int)
+	{
+		VectorIterator iterator = *this;
+		++(*this); 
+		return iterator;
+	}
+
+	VectorIterator& operator--()
+	{
+		ptr--;
+		return *this;
+	}
+
+	VectorIterator& operator--(int)
+	{
+		VectorIterator iterator = *this;
+		--(*this);
+		return iterator;
+	}
+
+	bool operator==(const VectorIterator& other) const
+	{
+		return ptr == other.ptr;
+	}
+
+
+	bool operator!=(const VectorIterator& other) const
+	{
+		return !(*this == other);
+	}
+
+private:
+	
+	Pointer ptr;
+};
+
+
 template<typename T>
 class Vector {
+public:
+	using Type = typename T;
+	using Reference = Type&;
+	using Pointer = Type*;
+	using Iterator = VectorIterator<Vector<T>>;
 public:
 	Vector()
 	{
@@ -84,6 +157,15 @@ public:
 		return m_data[index];
 	}
 
+	Iterator begin()
+	{
+		return Iterator(m_data);
+	}
+
+	Iterator end()
+	{
+		return Iterator(m_data + m_size);
+	}
 
 private:
 	void ReAlloc(size_t newCapacity)
